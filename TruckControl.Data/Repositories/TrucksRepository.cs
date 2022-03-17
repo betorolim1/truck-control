@@ -9,6 +9,11 @@ namespace TruckControl.Data.Repositories
 {
     public class TrucksRepository : ITrucksRepository
     {
+        public Task DeleteTruckByIdAsync(long id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<List<TruckDto>> GetAllTrucksAsync()
         {
             throw new NotImplementedException();

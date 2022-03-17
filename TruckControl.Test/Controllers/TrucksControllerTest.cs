@@ -96,7 +96,7 @@ namespace TruckControl.Test.Controllers
 
             VerifyAll();
         }
-        
+
         [Fact]
         public async Task UpdateTruckAsync_Must_notify_if_command_is_null()
         {
@@ -110,7 +110,7 @@ namespace TruckControl.Test.Controllers
 
             VerifyAll();
         }
-        
+
         [Fact]
         public async Task UpdateTruckAsync_Must_notify_if_handler_is_not_valid()
         {
@@ -135,6 +135,24 @@ namespace TruckControl.Test.Controllers
             Assert.NotNull(result);
             Assert.NotNull(result.Value);
             Assert.Equal(notify, result.Value);
+
+            VerifyAll();
+        }
+
+
+        //DeleteTruckByIdAsync
+
+
+        [Fact]
+        public async Task DeleteTruckByIdAsync_Must_return_NoContent()
+        {
+            _trucksHandlerMock.Setup(x => x.DeleteTruckByIdAsync(It.IsAny<DeleteTruckByIdCommand>()));
+
+            var controller = NewController();
+
+            var result = await controller.DeleteTruckByIdAsync(12) as NoContentResult;
+
+            Assert.NotNull(result);
 
             VerifyAll();
         }

@@ -157,6 +157,27 @@ namespace TruckControl.Test.Business.Handlers
             VerifyAll();
         }
 
+
+        // DeleteTruckByIdAsync
+
+
+        [Fact]
+        public async Task DeleteTruckByIdAsync_Must_delete()
+        {
+            var command = new DeleteTruckByIdCommand
+            {
+                Id = 12,
+            };
+
+            _trucksRepositoryMock.Setup(x => x.DeleteTruckByIdAsync(12));
+
+            var handler = NewHandler();
+
+            await handler.DeleteTruckByIdAsync(command);
+
+            VerifyAll();
+        }
+
         private TrucksHandler NewHandler() => new TrucksHandler(_trucksRepositoryMock.Object);
 
         private void VerifyAll()

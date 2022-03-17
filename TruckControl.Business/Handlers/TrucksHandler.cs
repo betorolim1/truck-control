@@ -70,5 +70,10 @@ namespace TruckControl.Business.Handlers
 
             await _trucksRepository.UpdateTruckAsync(truck);
         }
+
+        public async Task DeleteTruckByIdAsync(DeleteTruckByIdCommand command)
+        {
+            await _trucksRepository.DeleteTruckByIdAsync(command.Id);
+        }
     }
 }

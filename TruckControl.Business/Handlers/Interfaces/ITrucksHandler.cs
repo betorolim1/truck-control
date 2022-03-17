@@ -11,5 +11,6 @@ namespace TruckControl.Business.Handlers.Interfaces
         Task<List<TruckResult>> GetAllTrucksAsync();
         Task<TruckResult> GetTruckByIdAsync(GetTruckByIdCommand command);
         Task UpdateTruckAsync(UpdateTruckCommand command);
+        Task DeleteTruckByIdAsync(DeleteTruckByIdCommand command);
     }
 }

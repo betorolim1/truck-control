@@ -49,5 +49,18 @@ namespace TruckControl.Api.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteTruckByIdAsync(long id)
+        {
+            var command = new DeleteTruckByIdCommand
+            {
+                Id = id
+            };
+
+            await _trucksHandler.DeleteTruckByIdAsync(command);
+
+            return NoContent();
+        }
     }
 }
