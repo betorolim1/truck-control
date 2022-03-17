@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TruckControl.Api;
+using TruckControl.Api.Middleware;
 
 namespace TruckControl
 {
@@ -28,6 +29,8 @@ namespace TruckControl
             app.UseRouting();
 
             app.UseCors("CorsPolicy");
+
+            app.UseMiddleware<ExceptionMiddleware>(env);
 
             app.UseEndpoints(endpoints =>
             {
