@@ -75,5 +75,20 @@ namespace TruckControl.Business.Handlers
         {
             await _trucksRepository.DeleteTruckByIdAsync(command.Id);
         }
+
+        public async Task<long?> InsertTruckAsync(InsertTruckCommand command)
+        {
+            var truck = Truck.Fabric.CreateTruckForInsert(command.Model, command.ManufacturingYear, command.ModelYear);
+
+            if (!truck.Valid)
+            {
+                AddNotifications(truck.Notifications);
+                return null;
+            }
+
+            var id = await _trucksRepository.InsertTruckAsync(truck);
+
+            return id;
+        }
     }
 }

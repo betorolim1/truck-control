@@ -11,5 +11,6 @@ namespace TruckControl.Business.Trucks.Repositories
         Task<TruckDto> GetTruckByIdAsync(long id);
         Task UpdateTruckAsync(Truck truck);
         Task DeleteTruckByIdAsync(long id);
+        Task<long> InsertTruckAsync(Truck truck);
     }
 }

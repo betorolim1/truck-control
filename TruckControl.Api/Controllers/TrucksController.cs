@@ -62,5 +62,19 @@ namespace TruckControl.Api.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> InsertTruckAsync(InsertTruckCommand command)
+        {
+            if (command is null)
+                return BadRequest("Command cannot be null");
+
+            var result = await _trucksHandler.InsertTruckAsync(command);
+
+            if (!_trucksHandler.Valid)
+                return BadRequest(_trucksHandler.Notifications);
+
+            return Ok(result);
+        }
     }
 }

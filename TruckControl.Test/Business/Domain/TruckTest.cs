@@ -1,4 +1,5 @@
-﻿using TruckControl.Business.Trucks.Domain;
+﻿using TruckControl.Business.Shared;
+using TruckControl.Business.Trucks.Domain;
 using Xunit;
 
 namespace TruckControl.Test.Business.Domain
@@ -39,6 +40,19 @@ namespace TruckControl.Test.Business.Domain
 
             Assert.False(truck.Valid);
             Assert.Contains(truck.Notifications, nf => nf == "Model year must be greater than zero");
+        }
+        
+        [Fact]
+        public void Must_create_truck()
+        {
+            var truck = Truck.Fabric.CreateTruckForUpdate(1, 1, 2000, 2001);
+
+            Assert.True(truck.Valid);
+
+            Assert.Equal(1, truck.Id);
+            Assert.Equal(ModelEnum.FM, truck.Model);
+            Assert.Equal(2000, truck.ManufacturingYear);
+            Assert.Equal(2001, truck.ModelYear);
         }
     }
 }

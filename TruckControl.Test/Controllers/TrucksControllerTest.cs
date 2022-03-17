@@ -157,6 +157,74 @@ namespace TruckControl.Test.Controllers
             VerifyAll();
         }
 
+
+        // InsertTruckAsync
+
+
+        [Fact]
+        public async Task InsertTruckAsync_Must_return_NoContent()
+        {
+            var command = new InsertTruckCommand
+            {
+                ManufacturingYear = 2022,
+                Model = 1,
+                ModelYear = 2023
+            };
+
+            _trucksHandlerMock.Setup(x => x.InsertTruckAsync(command)).ReturnsAsync(1234);
+            _trucksHandlerMock.Setup(x => x.Valid).Returns(true);
+
+            var controller = NewController();
+
+            var result = await controller.InsertTruckAsync(command) as OkObjectResult;
+
+            Assert.NotNull(result);
+
+            VerifyAll();
+        }
+
+        [Fact]
+        public async Task InsertTruckAsync_Must_notify_if_command_is_null()
+        {
+            var controller = NewController();
+
+            var result = await controller.InsertTruckAsync(null) as BadRequestObjectResult;
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Value);
+            Assert.Equal("Command cannot be null", result.Value);
+
+            VerifyAll();
+        }
+
+        [Fact]
+        public async Task InsertTruckAsync_Must_notify_if_handler_is_not_valid()
+        {
+            var notify = new List<string> { "NotifyTest" };
+
+            var command = new InsertTruckCommand
+            {
+                ManufacturingYear = 2022,
+                Model = 99,
+                ModelYear = 2023
+            };
+
+            _trucksHandlerMock.Setup(x => x.InsertTruckAsync(command));
+            _trucksHandlerMock.Setup(x => x.Valid).Returns(false);
+            _trucksHandlerMock.Setup(x => x.Notifications).Returns(notify);
+
+            var controller = NewController();
+
+            var result = await controller.InsertTruckAsync(command) as BadRequestObjectResult;
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Value);
+            Assert.Equal(notify, result.Value);
+
+            VerifyAll();
+        }
+
+
         private TrucksController NewController() => new TrucksController(_trucksHandlerMock.Object);
 
         private void VerifyAll()
