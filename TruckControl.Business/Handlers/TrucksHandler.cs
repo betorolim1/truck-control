@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TruckControl.Business.Handlers.Interfaces;
 using TruckControl.Business.Shared;
+using TruckControl.Business.Shared.Validator;
 using TruckControl.Business.Trucks.Commands;
+using TruckControl.Business.Trucks.Domain;
 using TruckControl.Business.Trucks.Repositories;
 using TruckControl.Business.Trucks.Result;
 
 namespace TruckControl.Business.Handlers
 {
-    public class TrucksHandler : ITrucksHandler
+    public class TrucksHandler : Notifiable, ITrucksHandler
     {
         public ITrucksRepository _trucksRepository { get; set; }
 
@@ -54,6 +56,19 @@ namespace TruckControl.Business.Handlers
             };
 
             return result;
+        }
+
+        public async Task UpdateTruckAsync(UpdateTruckCommand command)
+        {
+            var truck = Truck.Fabric.CreateTruckForUpdate(command.Id, command.Model, command.ManufacturingYear, command.ModelYear);
+
+            if (!truck.Valid)
+            {
+                AddNotifications(truck.Notifications);
+                return;
+            }
+
+            await _trucksRepository.UpdateTruckAsync(truck);
         }
     }
 }

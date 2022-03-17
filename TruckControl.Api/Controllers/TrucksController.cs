@@ -35,5 +35,19 @@ namespace TruckControl.Api.Controllers
 
             return Ok(result);
         }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateTruckAsync(UpdateTruckCommand command)
+        {
+            if (command is null)
+                return BadRequest("Command cannot be null");
+
+            await _trucksHandler.UpdateTruckAsync(command);
+
+            if (!_trucksHandler.Valid)
+                return BadRequest(_trucksHandler.Notifications);
+
+            return NoContent();
+        }
     }
 }

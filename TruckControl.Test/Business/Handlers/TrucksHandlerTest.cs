@@ -4,11 +4,12 @@ using System.Threading.Tasks;
 using TruckControl.Business.Handlers;
 using TruckControl.Business.Shared;
 using TruckControl.Business.Trucks.Commands;
+using TruckControl.Business.Trucks.Domain;
 using TruckControl.Business.Trucks.Dto;
 using TruckControl.Business.Trucks.Repositories;
 using Xunit;
 
-namespace TruckControl.Test.Handlers
+namespace TruckControl.Test.Business.Handlers
 {
     public class TrucksHandlerTest
     {
@@ -19,7 +20,7 @@ namespace TruckControl.Test.Handlers
 
 
         [Fact]
-        public async Task GetAllTrucksAsync_Should_return_all_trucks()
+        public async Task GetAllTrucksAsync_Must_return_all_trucks()
         {
             var dto = new List<TruckDto>
             {
@@ -60,7 +61,7 @@ namespace TruckControl.Test.Handlers
 
 
         [Fact]
-        public async Task GetTruckByIdAsync_Should_return_truck_by_id()
+        public async Task GetTruckByIdAsync_Must_return_truck_by_id()
         {
             var command = new GetTruckByIdCommand
             {
@@ -91,7 +92,7 @@ namespace TruckControl.Test.Handlers
         }
 
         [Fact]
-        public async Task GetTruckByIdAsync_Should_return_null()
+        public async Task GetTruckByIdAsync_Must_return_null()
         {
             var command = new GetTruckByIdCommand
             {
@@ -105,6 +106,53 @@ namespace TruckControl.Test.Handlers
             var result = await handler.GetTruckByIdAsync(command);
 
             Assert.Null(result);
+
+            VerifyAll();
+        }
+
+
+        // UpdateTruckAsync
+
+
+        [Fact]
+        public async Task UpdateTruckAsync_Must_update()
+        {
+            var command = new UpdateTruckCommand
+            {
+                Id = 12,
+                ManufacturingYear = 2000,
+                Model = 1,
+                ModelYear = 2001
+            };
+
+            _trucksRepositoryMock.Setup(x => x.UpdateTruckAsync(It.IsAny<Truck>()));
+
+            var handler = NewHandler();
+
+            await handler.UpdateTruckAsync(command);
+
+            Assert.True(handler.Valid);
+
+            VerifyAll();
+        }
+
+        [Fact]
+        public async Task UpdateTruckAsync_Must_notify_if_truck_if_not_valid()
+        {
+            var command = new UpdateTruckCommand
+            {
+                Id = 0,
+                ManufacturingYear = 2000,
+                Model = 1,
+                ModelYear = 2001
+            };
+
+            var handler = NewHandler();
+
+            await handler.UpdateTruckAsync(command);
+
+            Assert.False(handler.Valid);
+            Assert.Contains(handler.Notifications, nf => nf == "Id must be greater than zero");
 
             VerifyAll();
         }

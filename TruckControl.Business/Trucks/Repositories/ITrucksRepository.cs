@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using TruckControl.Business.Trucks.Domain;
 using TruckControl.Business.Trucks.Dto;
 
 namespace TruckControl.Business.Trucks.Repositories
@@ -8,5 +9,6 @@ namespace TruckControl.Business.Trucks.Repositories
     {
         Task<List<TruckDto>> GetAllTrucksAsync();
         Task<TruckDto> GetTruckByIdAsync(long id);
+        Task UpdateTruckAsync(Truck truck);
     }
 }
