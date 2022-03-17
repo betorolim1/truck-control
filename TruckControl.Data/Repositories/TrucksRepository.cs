@@ -12,5 +12,10 @@ namespace TruckControl.Data.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public async Task<TruckDto> GetTruckByIdAsync(long id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

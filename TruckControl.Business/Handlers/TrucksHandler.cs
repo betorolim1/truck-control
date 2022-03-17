@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TruckControl.Business.Handlers.Interfaces;
 using TruckControl.Business.Shared;
+using TruckControl.Business.Trucks.Commands;
 using TruckControl.Business.Trucks.Repositories;
 using TruckControl.Business.Trucks.Result;
 
@@ -36,6 +37,23 @@ namespace TruckControl.Business.Handlers
             }
 
             return resultList;
+        }
+
+        public async Task<TruckResult> GetTruckByIdAsync(GetTruckByIdCommand command)
+        {
+            var dto = await _trucksRepository.GetTruckByIdAsync(command.Id);
+
+            if (dto is null)
+                return null;
+
+            var result = new TruckResult
+            {
+                ManufacturingYear = dto.ManufacturingYear,
+                Model = (ModelEnum)dto.Model,
+                ModelYear = dto.ModelYear
+            };
+
+            return result;
         }
     }
 }

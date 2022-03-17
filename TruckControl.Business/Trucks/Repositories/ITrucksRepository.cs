@@ -7,5 +7,6 @@ namespace TruckControl.Business.Trucks.Repositories
     public interface ITrucksRepository
     {
         Task<List<TruckDto>> GetAllTrucksAsync();
+        Task<TruckDto> GetTruckByIdAsync(long id);
     }
 }
