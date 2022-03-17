@@ -24,6 +24,11 @@ namespace TruckControl.Data.Repositories
             throw new NotImplementedException();
         }
 
+        public Task<long> InsertTruckAsync(Truck truck)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task UpdateTruckAsync(Truck truck)
         {
             throw new NotImplementedException();

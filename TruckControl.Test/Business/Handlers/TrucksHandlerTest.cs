@@ -178,6 +178,51 @@ namespace TruckControl.Test.Business.Handlers
             VerifyAll();
         }
 
+
+        // InsertTruckAsync
+
+
+        [Fact]
+        public async Task InsertTruckAsync_Must_update()
+        {
+            var command = new InsertTruckCommand
+            {
+                ManufacturingYear = 2000,
+                Model = 1,
+                ModelYear = 2001
+            };
+
+            _trucksRepositoryMock.Setup(x => x.InsertTruckAsync(It.IsAny<Truck>()));
+
+            var handler = NewHandler();
+
+            await handler.InsertTruckAsync(command);
+
+            Assert.True(handler.Valid);
+
+            VerifyAll();
+        }
+
+        [Fact]
+        public async Task InsertTruckAsync_Must_notify_if_truck_if_not_valid()
+        {
+            var command = new InsertTruckCommand
+            {
+                ManufacturingYear = 2000,
+                Model = 99,
+                ModelYear = 2001
+            };
+
+            var handler = NewHandler();
+
+            await handler.InsertTruckAsync(command);
+
+            Assert.False(handler.Valid);
+            Assert.Contains(handler.Notifications, nf => nf == "Model is invalid");
+
+            VerifyAll();
+        }
+
         private TrucksHandler NewHandler() => new TrucksHandler(_trucksRepositoryMock.Object);
 
         private void VerifyAll()
