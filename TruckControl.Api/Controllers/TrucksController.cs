@@ -37,7 +37,7 @@ namespace TruckControl.Api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateTruckAsync(UpdateTruckCommand command)
+        public async Task<IActionResult> UpdateTruckAsync([FromBody] UpdateTruckCommand command)
         {
             if (command is null)
                 return BadRequest("Command cannot be null");
@@ -50,7 +50,7 @@ namespace TruckControl.Api.Controllers
             return NoContent();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTruckByIdAsync(long id)
         {
             var command = new DeleteTruckByIdCommand
@@ -63,8 +63,8 @@ namespace TruckControl.Api.Controllers
             return NoContent();
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> InsertTruckAsync(InsertTruckCommand command)
+        [HttpPost]
+        public async Task<IActionResult> InsertTruckAsync([FromBody]InsertTruckCommand command)
         {
             if (command is null)
                 return BadRequest("Command cannot be null");
