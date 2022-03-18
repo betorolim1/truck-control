@@ -12,13 +12,13 @@ Os campos disponíveis são:
 3. ManufacturingYear -> Ano de fabricação
 4. ModelYear -> Ano do modelo
 
-* *Os modelos disponíveis são: 
+*Os modelos disponíveis são: 
 1. 0 -> FH
 2. 1 -> FM
 
 
 ## Endpoints
-Os endpoint disponíveis são
+Os endpoint disponíveis são:
 
 1. GET: /trucks/{id} -> Recupera o caminhão pelo Id
 
