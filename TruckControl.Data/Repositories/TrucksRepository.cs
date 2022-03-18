@@ -1,37 +1,56 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TruckControl.Business.Trucks.Domain;
-using TruckControl.Business.Trucks.Dto;
 using TruckControl.Business.Trucks.Repositories;
+using TruckControl.Data.Repositories.Base;
+using TruckControl.Model.EFModel;
 
 namespace TruckControl.Data.Repositories
 {
-    public class TrucksRepository : ITrucksRepository
+    public class TrucksRepository : BaseRepository<Truck>, ITrucksRepository
     {
-        public Task DeleteTruckByIdAsync(long id)
+        public TrucksRepository(AppDbContext appDbContext) : base(appDbContext)
         {
-            throw new NotImplementedException();
         }
 
-        public async Task<List<TruckDto>> GetAllTrucksAsync()
+        public async Task DeleteTruckByIdAsync(Truck truck)
         {
-            throw new NotImplementedException();
+            await RemoveAsync(truck);
         }
 
-        public async Task<TruckDto> GetTruckByIdAsync(long id)
+        public async Task<List<Truck>> GetAllTrucksAsync()
         {
-            throw new NotImplementedException();
+            return await AppDbContext.Truck.ToListAsync();
         }
 
-        public Task<long> InsertTruckAsync(Truck truck)
+        public async Task<Truck> GetTruckByIdAsync(long id)
         {
-            throw new NotImplementedException();
+            return await AppDbContext.Truck.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task UpdateTruckAsync(Truck truck)
+        public async Task<long> InsertTruckAsync(TruckDomain truck)
         {
-            throw new NotImplementedException();
+            var truckEf = new Truck
+            {
+                ManufacturingYear = truck.ManufacturingYear,
+                Model = (int)truck.Model,
+                ModelYear = truck.ModelYear
+            };
+
+            await AddAsync(truckEf);
+
+            return truckEf.Id;
+        }
+
+        public async Task UpdateTruckAsync(Truck oldTruck, TruckDomain newTruck)
+        {
+            oldTruck.ManufacturingYear = newTruck.ManufacturingYear;
+            oldTruck.Model = (int)newTruck.Model;
+            oldTruck.ModelYear = newTruck.ModelYear;
+
+            await UpdateAsync(oldTruck);
         }
     }
 }

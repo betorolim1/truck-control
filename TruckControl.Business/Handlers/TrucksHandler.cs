@@ -31,6 +31,7 @@ namespace TruckControl.Business.Handlers
                 resultList.Add(
                         new TruckResult
                         {
+                            Id = dto.Id,
                             ManufacturingYear = dto.ManufacturingYear,
                             Model = (ModelEnum)dto.Model,
                             ModelYear = dto.ModelYear
@@ -50,6 +51,7 @@ namespace TruckControl.Business.Handlers
 
             var result = new TruckResult
             {
+                Id = dto.Id,
                 ManufacturingYear = dto.ManufacturingYear,
                 Model = (ModelEnum)dto.Model,
                 ModelYear = dto.ModelYear
@@ -60,25 +62,38 @@ namespace TruckControl.Business.Handlers
 
         public async Task UpdateTruckAsync(UpdateTruckCommand command)
         {
-            var truck = Truck.Fabric.CreateTruckForUpdate(command.Id, command.Model, command.ManufacturingYear, command.ModelYear);
+            var newTruck = TruckDomain.Fabric.CreateTruckForUpdate(command.Id, command.Model, command.ManufacturingYear, command.ModelYear);
 
-            if (!truck.Valid)
+            if (!newTruck.Valid)
             {
-                AddNotifications(truck.Notifications);
+                AddNotifications(newTruck.Notifications);
                 return;
             }
 
-            await _trucksRepository.UpdateTruckAsync(truck);
+            var oldTruck = await _trucksRepository.GetTruckByIdAsync(newTruck.Id);
+
+            if (oldTruck is null)
+            {
+                AddNotification("Truck does not exist");
+                return;
+            }
+
+            await _trucksRepository.UpdateTruckAsync(oldTruck, newTruck);
         }
 
         public async Task DeleteTruckByIdAsync(DeleteTruckByIdCommand command)
         {
-            await _trucksRepository.DeleteTruckByIdAsync(command.Id);
+            var truck = await _trucksRepository.GetTruckByIdAsync(command.Id);
+
+            if (truck is null)
+                return;
+
+            await _trucksRepository.DeleteTruckByIdAsync(truck);
         }
 
         public async Task<long?> InsertTruckAsync(InsertTruckCommand command)
         {
-            var truck = Truck.Fabric.CreateTruckForInsert(command.Model, command.ManufacturingYear, command.ModelYear);
+            var truck = TruckDomain.Fabric.CreateTruckForInsert(command.Model, command.ManufacturingYear, command.ModelYear);
 
             if (!truck.Valid)
             {

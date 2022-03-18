@@ -5,8 +5,8 @@ using TruckControl.Business.Handlers;
 using TruckControl.Business.Shared;
 using TruckControl.Business.Trucks.Commands;
 using TruckControl.Business.Trucks.Domain;
-using TruckControl.Business.Trucks.Dto;
 using TruckControl.Business.Trucks.Repositories;
+using TruckControl.Model.EFModel;
 using Xunit;
 
 namespace TruckControl.Test.Business.Handlers
@@ -22,16 +22,16 @@ namespace TruckControl.Test.Business.Handlers
         [Fact]
         public async Task GetAllTrucksAsync_Must_return_all_trucks()
         {
-            var dto = new List<TruckDto>
+            var dto = new List<Truck>
             {
-                new TruckDto
+                new Truck
                 {
                     Id = 12,
                     ManufacturingYear = 2022,
                     Model = 1,
                     ModelYear = 2023
                 },
-                new TruckDto
+                new Truck
                 {
                     Id  = 14,
                     ManufacturingYear = 2023,
@@ -49,6 +49,7 @@ namespace TruckControl.Test.Business.Handlers
             Assert.NotNull(result);
             Assert.Equal(2, result.Count);
 
+            Assert.Equal(12, result[0].Id);
             Assert.Equal(2022, result[0].ManufacturingYear);
             Assert.Equal(ModelEnum.FM, result[0].Model);
             Assert.Equal(2023, result[0].ModelYear);
@@ -68,7 +69,7 @@ namespace TruckControl.Test.Business.Handlers
                 Id = 12
             };
 
-            var dto = new TruckDto
+            var dto = new Truck
             {
                 Id = 12,
                 ManufacturingYear = 2022,
@@ -84,6 +85,7 @@ namespace TruckControl.Test.Business.Handlers
 
             Assert.NotNull(result);
 
+            Assert.Equal(12, result.Id);
             Assert.Equal(2022, result.ManufacturingYear);
             Assert.Equal(ModelEnum.FM, result.Model);
             Assert.Equal(2023, result.ModelYear);
@@ -125,7 +127,17 @@ namespace TruckControl.Test.Business.Handlers
                 ModelYear = 2001
             };
 
-            _trucksRepositoryMock.Setup(x => x.UpdateTruckAsync(It.IsAny<Truck>()));
+            var oldTruck = new Truck
+            {
+                Id = 11,
+                ManufacturingYear = 1999,
+                Model = 0,
+                ModelYear = 2000
+            };
+
+            _trucksRepositoryMock.Setup(x => x.GetTruckByIdAsync(12)).ReturnsAsync(oldTruck);
+
+            _trucksRepositoryMock.Setup(x => x.UpdateTruckAsync(oldTruck, It.IsAny<TruckDomain>()));
 
             var handler = NewHandler();
 
@@ -137,7 +149,7 @@ namespace TruckControl.Test.Business.Handlers
         }
 
         [Fact]
-        public async Task UpdateTruckAsync_Must_notify_if_truck_if_not_valid()
+        public async Task UpdateTruckAsync_Must_notify_if_truck_is_not_valid()
         {
             var command = new UpdateTruckCommand
             {
@@ -156,6 +168,29 @@ namespace TruckControl.Test.Business.Handlers
 
             VerifyAll();
         }
+        
+        [Fact]
+        public async Task UpdateTruckAsync_Must_notify_if_truck_does_not_exist()
+        {
+            var command = new UpdateTruckCommand
+            {
+                Id = 12,
+                ManufacturingYear = 2000,
+                Model = 1,
+                ModelYear = 2001
+            };
+
+            _trucksRepositoryMock.Setup(x => x.GetTruckByIdAsync(12));
+
+            var handler = NewHandler();
+
+            await handler.UpdateTruckAsync(command);
+
+            Assert.False(handler.Valid);
+            Assert.Contains(handler.Notifications, nf => nf == "Truck does not exist");
+
+            VerifyAll();
+        }
 
 
         // DeleteTruckByIdAsync
@@ -169,7 +204,34 @@ namespace TruckControl.Test.Business.Handlers
                 Id = 12,
             };
 
+            var oldTruck = new Truck
+            {
+                Id = 11,
+                ManufacturingYear = 1999,
+                Model = 0,
+                ModelYear = 2000
+            };
+
+            _trucksRepositoryMock.Setup(x => x.GetTruckByIdAsync(12)).ReturnsAsync(oldTruck);
+
             _trucksRepositoryMock.Setup(x => x.DeleteTruckByIdAsync(12));
+
+            var handler = NewHandler();
+
+            await handler.DeleteTruckByIdAsync(command);
+
+            VerifyAll();
+        }
+
+        [Fact]
+        public async Task DeleteTruckByIdAsync_Must_not_notify_if_truck_does_not_exist()
+        {
+            var command = new DeleteTruckByIdCommand
+            {
+                Id = 12,
+            };
+
+            _trucksRepositoryMock.Setup(x => x.GetTruckByIdAsync(12));
 
             var handler = NewHandler();
 
@@ -192,7 +254,7 @@ namespace TruckControl.Test.Business.Handlers
                 ModelYear = 2001
             };
 
-            _trucksRepositoryMock.Setup(x => x.InsertTruckAsync(It.IsAny<Truck>()));
+            _trucksRepositoryMock.Setup(x => x.InsertTruckAsync(It.IsAny<TruckDomain>()));
 
             var handler = NewHandler();
 

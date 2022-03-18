@@ -1,6 +1,6 @@
-﻿namespace TruckControl.Business.Trucks.Dto
+﻿namespace TruckControl.Model.EFModel
 {
-    public class TruckDto
+    public partial class Truck
     {
         public long Id { get; set; }
         public int Model { get; set; }

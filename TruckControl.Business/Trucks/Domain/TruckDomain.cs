@@ -4,9 +4,9 @@ using TruckControl.Business.Shared.Validator;
 
 namespace TruckControl.Business.Trucks.Domain
 {
-    public class Truck : Notifiable
+    public class TruckDomain : Notifiable
     {
-        private Truck(long id, int model, int manufacturingYear, int modelYear)
+        private TruckDomain(long id, int model, int manufacturingYear, int modelYear)
         {
             Id = id;
             Model = (ModelEnum)model;
@@ -16,7 +16,7 @@ namespace TruckControl.Business.Trucks.Domain
             ValidateUpdate();
         }
         
-        private Truck(int model, int manufacturingYear, int modelYear)
+        private TruckDomain(int model, int manufacturingYear, int modelYear)
         {
             Model = (ModelEnum)model;
             ManufacturingYear = manufacturingYear;
@@ -59,11 +59,11 @@ namespace TruckControl.Business.Trucks.Domain
 
         public static class Fabric
         {
-            public static Truck CreateTruckForUpdate(long id, int model, int manufacturingYear, int modelYear)
-                => new Truck(id, model, manufacturingYear, modelYear);
+            public static TruckDomain CreateTruckForUpdate(long id, int model, int manufacturingYear, int modelYear)
+                => new TruckDomain(id, model, manufacturingYear, modelYear);
 
-            public static Truck CreateTruckForInsert(int model, int manufacturingYear, int modelYear)
-                => new Truck(model, manufacturingYear, modelYear);
+            public static TruckDomain CreateTruckForInsert(int model, int manufacturingYear, int modelYear)
+                => new TruckDomain(model, manufacturingYear, modelYear);
         }
     }
 }

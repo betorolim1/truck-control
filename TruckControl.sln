@@ -5,11 +5,13 @@ VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TruckControl.Api", "TruckControl.Api\TruckControl.Api.csproj", "{5A859532-2F6E-46C1-AA82-9C6BB7DFC3C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TruckControl.Business", "TruckControl.Business\TruckControl.Business.csproj", "{83E31F87-0176-4A95-940C-F4CB86BAB9D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TruckControl.Business", "TruckControl.Business\TruckControl.Business.csproj", "{83E31F87-0176-4A95-940C-F4CB86BAB9D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TruckControl.Data", "TruckControl.Data\TruckControl.Data.csproj", "{07D48364-B7F9-42D0-B6B9-B05CE3253826}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TruckControl.Data", "TruckControl.Data\TruckControl.Data.csproj", "{07D48364-B7F9-42D0-B6B9-B05CE3253826}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TruckControl.Test", "TruckControl.Test\TruckControl.Test.csproj", "{889FD818-17FE-46C3-87AC-AC6BEA3BDDCC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TruckControl.Test", "TruckControl.Test\TruckControl.Test.csproj", "{889FD818-17FE-46C3-87AC-AC6BEA3BDDCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TruckControl.Model", "TruckControl.Model\TruckControl.Model.csproj", "{EC59885B-B11C-49D4-AAB4-60632A3E6CC7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{889FD818-17FE-46C3-87AC-AC6BEA3BDDCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{889FD818-17FE-46C3-87AC-AC6BEA3BDDCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{889FD818-17FE-46C3-87AC-AC6BEA3BDDCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC59885B-B11C-49D4-AAB4-60632A3E6CC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC59885B-B11C-49D4-AAB4-60632A3E6CC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC59885B-B11C-49D4-AAB4-60632A3E6CC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC59885B-B11C-49D4-AAB4-60632A3E6CC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
