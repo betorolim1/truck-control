@@ -31,6 +31,8 @@ Os endpoint disponíveis são:
 
 ## Observações
 
+* O usuário que for executar o sistema deve inserir a string de conexão de seu banco de dados no arquivo appsettings.json (TruckControl.Api/appsettings.json), substituindo o texto "CONNECTION_STRING_HERE" pela respectiva string de conexão. Ex.: "Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=TruckDb;Data Source=DESKTOP-ABC1234"
+
 * Os endpoints também podem ser acessados pelo Swagger. Basta adicionar “/swagger/index.html” ao final da url. Ex.: https://localhost:44361/swagger/index.html
 
 * No recurso de inserção (POST), caso seja informado um caminhão válido, o id do mesmo é retornado, facilitando possíveis consultas
